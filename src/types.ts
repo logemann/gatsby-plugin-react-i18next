@@ -7,6 +7,7 @@ export type PageOptions = {
   getLanguageFromPath?: boolean;
   excludeLanguages?: string[];
   languages?: string[];
+  urlPageRewrite?: Map<string, string>;
 };
 
 export type PluginOptions = {

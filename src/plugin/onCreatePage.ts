@@ -104,15 +104,23 @@ export const onCreatePage = async (
   createPage(newPage);
 
   await BP.map(alternativeLanguages, async (lng) => {
+    let myPath: string | undefined = `${lng}${page.path}`;
+    if (pageOptions?.urlPageRewrite) {
+      myPath = pageOptions?.urlPageRewrite.get(lng)
+        ? `${lng}${pageOptions?.urlPageRewrite.get(lng)}`
+        : `${lng}${page.path}`;
+    }
+
     const localePage = await generatePage({
       language: lng,
-      path: `${lng}${page.path}`,
+      path: myPath,
       routed: true
     });
     const regexp = new RegExp('/404/?$');
     if (regexp.test(localePage.path)) {
       localePage.matchPath = `/${lng}/*`;
     }
+    //console.log(`Create Localized page: ${localePage.path}`);
     createPage(localePage);
   });
 };
